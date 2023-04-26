@@ -45,12 +45,11 @@ void printPerson (Person person)
     cout << "Telefon: " << person.phoneNumber << endl;
     cout << "Email: " << person.email << endl;
     cout << "Adres: " << person.address << endl << endl;
+    //cout << person.id << endl;
 }
 
 int getInputsFromFile(vector<Person>& addressBookInputs, int inputsCount)
 {
-    int lineNumber = 1;
-    string line;
     fstream file;
     file.open("AddressBook.txt", ios::in);
 
@@ -65,28 +64,6 @@ int getInputsFromFile(vector<Person>& addressBookInputs, int inputsCount)
         addressBookInputs.push_back(input);
         inputsCount++;
     }
-//    while(getline(file, line))
-//    {
-//        switch(lineNumber)
-//        {
-//        case 1:
-//            addressBookInputs[inputsCount].id = stoi(line); break;
-//        case 2:
-//            addressBookInputs[inputsCount].firstName = line; break;
-//        case 3:
-//            addressBookInputs[inputsCount].lastName = line; break;
-//        case 4:
-//            addressBookInputs[inputsCount].phoneNumber = line; break;
-//        case 5:
-//            addressBookInputs[inputsCount].email = line; break;
-//        case 6:
-//            addressBookInputs[inputsCount].address = line;
-//            inputsCount++;
-//            lineNumber = 0;
-//            break;
-//        }
-//        lineNumber++;
-//    }
 
     file.close();
 
@@ -109,6 +86,8 @@ int addInput (vector<Person>& addressBookInputs, int inputsCount)
     input.address = readLine();
 
     input.id = inputsCount + 1;
+
+    addressBookInputs.push_back(input);
     system("pause");
 
     fstream file;
@@ -120,13 +99,13 @@ int addInput (vector<Person>& addressBookInputs, int inputsCount)
     }
     else
     {
-        addressBookInputs.push_back(input);
-        inputsCount++;
-
-        cout << endl << "Osoba zostala dodana do ksiazki adresowej." << endl;
-        system("pause");
+        file << input.id << endl << input.firstName << endl << input.lastName << endl << input.phoneNumber << endl << input.email << endl << input.address << endl;
+        file.close();
+        cout << "Osoba zostala dodana do ksiazki adresowej." << endl;
     }
-    return inputsCount;
+    system("pause");
+
+    return ++inputsCount;
 }
 
 void searchBy(vector<Person>& addressBookInputs, int inputsCount, string field, string value)
@@ -152,18 +131,16 @@ void searchBy(vector<Person>& addressBookInputs, int inputsCount, string field, 
 
 void showAllInputs(vector<Person>& addressBookInputs, int inputsCount)
 {
-    if (inputsCount == 0)
+    if (inputsCount != 0)
     {
-        cout << "Ksiazka adresowa jest pusta." << endl;
-    }
-    else
-    {
-
         for (int i = 0; i < inputsCount; i++)
         {
             printPerson(addressBookInputs.at(i));
         }
-
+    }
+    else
+    {
+        cout << "Ksiazka adresowa jest pusta." << endl;
     }
 
     system("pause");
@@ -175,7 +152,6 @@ int main()
     char selection;
     string searchedFirstName;
     string searchedLastName;
-    //Person addressBookInputs[1000];
     vector<Person> addressBookInputs;
     inputsCount = getInputsFromFile(addressBookInputs, inputsCount);
 
