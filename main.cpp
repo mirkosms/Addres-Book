@@ -2,6 +2,7 @@
 #include <fstream>
 #include <string>
 #include <vector>
+#include <sstream>
 
 using namespace std;
 
@@ -50,6 +51,7 @@ void printPerson (Person person)
 
 int getInputsFromFile(vector<Person>& addressBookInputs, int inputsCount)
 {
+    string line;
     fstream file;
     file.open("AddressBook.txt", ios::in);
 
@@ -57,10 +59,21 @@ int getInputsFromFile(vector<Person>& addressBookInputs, int inputsCount)
     {
         cout << "Nie mozna otworzyc pliku. " << endl;
     }
-
     Person input;
-    while (file >> input.id >> input.firstName >> input.lastName >> input.phoneNumber >> input.email >> input.address)
+    while (getline(file, line))
     {
+        input.id = stoi(line);
+        getline(file, line);
+        input.firstName = line;
+        getline(file, line);
+        input.lastName = line;
+        getline(file, line);
+        input.phoneNumber = line;
+        getline(file, line);
+        input.email = line;
+        getline(file, line);
+        input.address = line;
+
         addressBookInputs.push_back(input);
         inputsCount++;
     }
