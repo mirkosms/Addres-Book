@@ -120,12 +120,8 @@ int addInput (vector<Person>& addressBookInputs, int inputsCount)
     }
     else
     {
-        while (file << input.firstName << input.lastName << input.phoneNumber << input.email << input.address)
-        {
-            addressBookInputs.push_back(input);
-            inputsCount++;
-        }
-        file.close();
+        addressBookInputs.push_back(input);
+        inputsCount++;
 
         cout << endl << "Osoba zostala dodana do ksiazki adresowej." << endl;
         system("pause");
