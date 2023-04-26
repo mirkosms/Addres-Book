@@ -4,6 +4,7 @@
 #include <vector>
 #include <sstream>
 
+
 using namespace std;
 
 struct Person
@@ -34,7 +35,7 @@ char getChar()
             break;
         }
         else
-            cout << "To nie jest pojedynczy character. Wpisz ponownie." << endl;
+            cout << "To nie jest pojedynczy znak. Wpisz ponownie." << endl;
     }
     return character;
 }
@@ -59,20 +60,22 @@ int getInputsFromFile(vector<Person>& addressBookInputs, int inputsCount)
     {
         cout << "Nie mozna otworzyc pliku. " << endl;
     }
+
     Person input;
     while (getline(file, line))
     {
+        // Tworzymy strumieñ na podstawie aktualnie wczytywanej linii
+        stringstream ss(line);
+
+        // Parsujemy kolejne elementy oddzielone znakiem '|'
+        getline(ss, line, '|');
         input.id = stoi(line);
-        getline(file, line);
-        input.firstName = line;
-        getline(file, line);
-        input.lastName = line;
-        getline(file, line);
-        input.phoneNumber = line;
-        getline(file, line);
-        input.email = line;
-        getline(file, line);
-        input.address = line;
+
+        getline(ss, input.firstName, '|');
+        getline(ss, input.lastName, '|');
+        getline(ss, input.phoneNumber, '|');
+        getline(ss, input.email, '|');
+        getline(ss, input.address, '|');
 
         addressBookInputs.push_back(input);
         inputsCount++;
@@ -95,7 +98,7 @@ int addInput (vector<Person>& addressBookInputs, int inputsCount)
     input.phoneNumber = readLine();
     cout << "Podaj email: ";
     input.email = readLine();
-    cout << "Podaj address: ";
+    cout << "Podaj adres: ";
     input.address = readLine();
 
     input.id = inputsCount + 1;
@@ -112,7 +115,7 @@ int addInput (vector<Person>& addressBookInputs, int inputsCount)
     }
     else
     {
-        file << input.id << endl << input.firstName << endl << input.lastName << endl << input.phoneNumber << endl << input.email << endl << input.address << endl;
+        file << input.id << "|" << input.firstName << "|" << input.lastName << "|" << input.phoneNumber << "|" << input.email << "|" << input.address << endl;
         file.close();
         cout << "Osoba zostala dodana do ksiazki adresowej." << endl;
     }
